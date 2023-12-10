@@ -9,20 +9,34 @@ public class DebugControls : MonoBehaviour
     public GameObject prefabToSpawn;
     private BranchPlacer branchPlacer;
 
+    public Sprite pear;
+    public Sprite square;
+
     void Start()
     {
         branchPlacer = GameObject.Find("Components").GetComponent<BranchPlacer>();
     }
 
-    void Update()
+    public void InstantiatePearBranch()
     {
-        if(isDebugging == false) return;
-        // Check if the spacebar is pressed
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Spawn the prefab at the current position of the script's GameObject
-            Branch branch = Instantiate(prefabToSpawn, transform.position, Quaternion.identity).GetComponent<Branch>();
-            branchPlacer.PromptBranchPlacement(branch);
-        }
+        Branch branch = Instantiate(prefabToSpawn, transform.position, Quaternion.identity).GetComponent<Branch>();
+        branch.shapeEffect = pear;
+        Debug.Log(branch.shapeEffect.name);
+        branchPlacer.PromptBranchPlacement(branch);
+    }
+
+    public void InstantiateSquareBranch()
+    {
+        Branch branch = Instantiate(prefabToSpawn, transform.position, Quaternion.identity).GetComponent<Branch>();
+        branch.shapeEffect = square;
+        Debug.Log(branch.shapeEffect.name);
+        branchPlacer.PromptBranchPlacement(branch);
+    }
+
+    public void InstantiateFruitNode()
+    {
+        Branch branch = Instantiate(prefabToSpawn, transform.position, Quaternion.identity).GetComponent<Branch>();
+        branch.isFruitNode = true;
+        branchPlacer.PromptBranchPlacement(branch);
     }
 }

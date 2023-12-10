@@ -44,7 +44,9 @@ public class BranchPlacer : MonoBehaviour
         buttons.SetActive(false);
         popupBox.SetActive(false);
 
-        PlaceBranch();
+        if(branch.isFruitNode == false) PlaceBranch();
+        else PlaceFruitNode();
+
         potentialNode.connectedNode = branch.Nodes()[0].transform.GetComponent<Node>();
         branch.Nodes()[0].transform.GetComponent<Node>().connectedNode = potentialNode;
         tree.canSelect = true;
@@ -64,7 +66,35 @@ public class BranchPlacer : MonoBehaviour
     {
         branch.startingWidth = potentialNode.width;
         branch.startingPosition = new Vector2(potentialNode.gameObject.transform.position.x, potentialNode.gameObject.transform.position.y);
+        float lenReduceFactor = branch.startingWidth/potentialNode.parentBranch.startingWidth;
+        branch.minNodeGenerationDistY = potentialNode.parentBranch.minNodeGenerationDistY * lenReduceFactor;
+        branch.maxNodeGenerationDistY = potentialNode.parentBranch.maxNodeGenerationDistY * lenReduceFactor;
+        branch.maxNodeGenerationDistX = potentialNode.parentBranch.maxNodeGenerationDistX * lenReduceFactor;
+
         branch.isChild = true;
+        branch.parentBranch = potentialNode.parentBranch;
+        List<Branch> tempParentBranches = branch.parentBranch.parentBranches;
+        tempParentBranches.Add(branch.parentBranch);
+        branch.parentBranches = tempParentBranches;
+        
+        branch.CreateBranch();
+    }
+
+    private void PlaceFruitNode(){
+        branch.nodeCount = 2;
+        branch.startingWidth = potentialNode.width;
+        branch.startingPosition = new Vector2(potentialNode.gameObject.transform.position.x, potentialNode.gameObject.transform.position.y);
+        branch.minNodeGenerationDistY = 1;
+        branch.maxNodeGenerationDistY = branch.minNodeGenerationDistY;
+        float lenReduceFactor = branch.startingWidth/potentialNode.parentBranch.startingWidth;
+        branch.maxNodeGenerationDistX = potentialNode.parentBranch.maxNodeGenerationDistX * lenReduceFactor;
+
+        branch.isChild = true;
+        branch.parentBranch = potentialNode.parentBranch;
+        List<Branch> tempParentBranches = branch.parentBranch.parentBranches;
+        tempParentBranches.Add(branch.parentBranch);
+        branch.parentBranches = tempParentBranches;
+        
         branch.CreateBranch();
     }
 }

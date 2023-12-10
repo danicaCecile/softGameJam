@@ -6,10 +6,12 @@ public class Branch : MonoBehaviour
 {
     public GameObject nodePrefab;  // Prefab for the nodes
     public GameObject linePrefab; // Prefab for the line between nodes
+    public GameObject fruitPrefab;
 
     private List<GameObject> nodes = new List<GameObject>();  // List to store references to the instantiated nodes
     private List<GameObject> lines = new List<GameObject>(); // List to store references to the instantiated lines
-    
+    private List<GameObject> fruits = new List<GameObject>();
+
     public int nodeCount; //Number of nodes the branch has
     public float maxNodeGenerationDistX;
     public float maxNodeGenerationDistY;
@@ -18,10 +20,20 @@ public class Branch : MonoBehaviour
     public float startingWidth;
     public float endingWidth;
 
-    public List<Branch> childBranches = new List<Branch>();
+    public List<Branch> parentBranches = new List<Branch>();
+    public Branch parentBranch;
+
     public bool isChild = false;
     public OrchardTree parentTree;
     public Vector2 startingPosition = new Vector2(0,0);
+
+    public bool isFruitNode = false;
+
+    //Every augment branch can make to fruit
+    public int costEffect;
+    public int colorEffect;
+    public int sizeEffect;
+    public Sprite shapeEffect;
 
     private void Awake()
     {
@@ -114,6 +126,7 @@ public class Branch : MonoBehaviour
     {
         InstantiateNodes();
         RegisterNodes();
+
         if(isChild == true) 
         {
             nodes[0].transform.GetComponent<CircleCollider2D>().enabled = false;
@@ -142,6 +155,8 @@ public class Branch : MonoBehaviour
             line.startWidth = nodeSizes[i].x/3;
             line.endWidth = nodeSizes[i+1].x/3;
         }
+
+        if(isFruitNode == true) InstantiateFruit();
     }
 
     private void UpdateLines()
@@ -151,11 +166,6 @@ public class Branch : MonoBehaviour
             // Update the positions of the lines to connect the current dot to the next dot
             lines[i].GetComponent<LineRenderer>().SetPositions(new Vector3[] { nodes[i].transform.position, nodes[i + 1].transform.position});
         }
-    }
-
-    public void AddChildBranch(Branch branch)
-    {
-        childBranches.Add(branch);
     }
 
     public void resetSize(float width)
@@ -185,5 +195,15 @@ public class Branch : MonoBehaviour
     public List<GameObject> Nodes()
     {
         return nodes;
+    }
+
+    public void InstantiateFruit()
+    {
+        GameObject newFruit = Instantiate(fruitPrefab);
+        newFruit.transform.GetComponent<Fruit>().parentNode = nodes[nodes.Count-1].transform.GetComponent<Node>();
+        fruits.Add(newFruit);
+        parentTree.RegisterFruit(newFruit.transform.GetComponent<Fruit>());
+        Debug.Log(parentBranch.name);
+        newFruit.transform.GetComponent<Fruit>().SetSprite(parentBranch.shapeEffect);
     }
 }

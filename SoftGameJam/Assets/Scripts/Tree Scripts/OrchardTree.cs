@@ -17,6 +17,7 @@ public class OrchardTree : MonoBehaviour
     public float trunkEndingWidth;
 
     public List<Node> allNodes = new List<Node>();
+    public List<Fruit> allFruit = new List<Fruit>();
     public Color selectedColor;
     public Color placementModeColor;
 
@@ -25,6 +26,8 @@ public class OrchardTree : MonoBehaviour
     public bool canSelect = true;
 
     private BranchPlacer branchPlacer;
+
+    public List<Sprite> fruitShapes = new List<Sprite>();
 
     void Awake()
     {
@@ -40,6 +43,10 @@ public class OrchardTree : MonoBehaviour
         AddBranch(trunk);
         trunk.gameObject.transform.parent = gameObject.transform;
         
+        int randIndex = Random.Range(0, fruitShapes.Count);
+        trunk.shapeEffect = fruitShapes[randIndex];
+        Debug.Log(randIndex);
+
         trunk.name = "Trunk";
         trunk.nodeCount = trunkNodeCount;
         trunk.maxNodeGenerationDistX = trunkMaxNodeGenerationDistX; 
@@ -57,6 +64,11 @@ public class OrchardTree : MonoBehaviour
     public void RegisterNode(Node node)
     {
         allNodes.Add(node);
+    }
+
+    public void RegisterFruit(Fruit fruit)
+    {
+        allFruit.Add(fruit);
     }
 
     public void SelectNode(Node node)
@@ -95,7 +107,7 @@ public class OrchardTree : MonoBehaviour
         UnselectSelectedNode();
         foreach(Node node in allNodes)
         {
-            if(node.connectedNode != null)
+            if(node.connectedNode != null || node.parentBranch.isFruitNode == true)
             {
                 node.canBeSelected = false;
                 continue;
@@ -111,5 +123,10 @@ public class OrchardTree : MonoBehaviour
             node.canBeSelected = true;
             node.UpdateColor(node.originalColor);
         }
+    }
+
+    public void GrowAllFruit()
+    {
+        foreach(Fruit fruit in allFruit) fruit.ProgressGrowth();
     }
 }
