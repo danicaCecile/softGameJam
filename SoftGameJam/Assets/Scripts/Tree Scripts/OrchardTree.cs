@@ -28,6 +28,10 @@ public class OrchardTree : MonoBehaviour
     private BranchPlacer branchPlacer;
 
     public List<Sprite> fruitShapes = new List<Sprite>();
+    public Color trunkColorEffect;
+    public int startingCost = 10;
+
+    public int highestCost;
 
     void Awake()
     {
@@ -35,6 +39,7 @@ public class OrchardTree : MonoBehaviour
         trunk.CreateBranch();
         trunk.Nodes()[0].GetComponent<CircleCollider2D>().enabled = false;
         branchPlacer = GameObject.Find("Components").GetComponent<BranchPlacer>();
+        highestCost = startingCost;
     }
 
     private void CreateTrunk()
@@ -45,15 +50,15 @@ public class OrchardTree : MonoBehaviour
         
         int randIndex = Random.Range(0, fruitShapes.Count);
         trunk.shapeEffect = fruitShapes[randIndex];
-        Debug.Log(randIndex);
 
-        trunk.name = "Trunk";
         trunk.nodeCount = trunkNodeCount;
         trunk.maxNodeGenerationDistX = trunkMaxNodeGenerationDistX; 
         trunk.maxNodeGenerationDistY = trunkMaxNodeGenerationDistY;
         trunk.minNodeGenerationDistY = trunkMinNodeGenerationDistY;
         trunk.startingWidth = trunkStartingWidth;
         trunk.endingWidth = trunkEndingWidth;
+        trunk.finalColor = trunkColorEffect;
+        trunk.finalCost = 10;
     }
 
     public void AddBranch(Branch branch)

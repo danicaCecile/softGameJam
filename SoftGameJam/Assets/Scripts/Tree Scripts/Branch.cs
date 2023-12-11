@@ -30,8 +30,21 @@ public class Branch : MonoBehaviour
     public bool isFruitNode = false;
 
     //Every augment branch can make to fruit
+
+    //this int determines which effect is being applied: subraction (0), addition (1), multiplication(2), or division(3)
+    public int costEffectType;
+
+    //this is the factor by which the type is applied
     public int costEffect;
-    public int colorEffect;
+    public int finalCost;
+
+    //this int determines which effect is being applied: subraction (0), addition (1), or setting (2)
+    public int colorEffectType;
+
+    //the actual color effect
+    public Color colorEffect;
+    public Color finalColor;
+
     public int sizeEffect;
     public Sprite shapeEffect;
 
@@ -201,9 +214,13 @@ public class Branch : MonoBehaviour
     {
         GameObject newFruit = Instantiate(fruitPrefab);
         newFruit.transform.GetComponent<Fruit>().parentNode = nodes[nodes.Count-1].transform.GetComponent<Node>();
+        newFruit.transform.GetComponent<Fruit>().parentNode.currentFruit = newFruit.transform.GetComponent<Fruit>();
+
         fruits.Add(newFruit);
         parentTree.RegisterFruit(newFruit.transform.GetComponent<Fruit>());
         Debug.Log(parentBranch.name);
         newFruit.transform.GetComponent<Fruit>().SetSprite(parentBranch.shapeEffect);
+        newFruit.transform.GetComponent<Fruit>().SetColor(parentBranch.finalColor);
+        newFruit.transform.GetComponent<Fruit>().SetCost(parentBranch.finalCost);
     }
 }

@@ -11,10 +11,14 @@ public class Node : MonoBehaviour
 
     public Color originalColor;
     public Node connectedNode;
+    public Fruit currentFruit;
+
+    private Bank bank;
 
     void Awake()
     {
         originalColor = GetComponent<SpriteRenderer>().color;
+        bank = GameObject.Find("Bank").GetComponent<Bank>();
     }
 
     void Update()
@@ -27,6 +31,11 @@ public class Node : MonoBehaviour
     {
         offset = transform.position - MouseWorldPosition();
         parentBranch.parentTree.SelectNode(this);
+        if(currentFruit != null && currentFruit.isRipe == true)
+        {
+            currentFruit.ResetGrowth();
+            bank.AddToBank(currentFruit.cost);
+        }
     }
  
     void OnMouseDrag()

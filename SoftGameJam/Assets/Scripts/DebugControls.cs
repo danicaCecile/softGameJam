@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class DebugControls : MonoBehaviour
 {
-    [SerializeField] bool isDebugging = false;
-
     public GameObject prefabToSpawn;
     private BranchPlacer branchPlacer;
 
     public Sprite pear;
     public Sprite square;
+    public Color colorEffect;
+    public int colorEffectType;
+
+    public int costEffect;
+    public int costEffectType;
 
     void Start()
     {
@@ -21,7 +24,12 @@ public class DebugControls : MonoBehaviour
     {
         Branch branch = Instantiate(prefabToSpawn, transform.position, Quaternion.identity).GetComponent<Branch>();
         branch.shapeEffect = pear;
-        Debug.Log(branch.shapeEffect.name);
+        branch.colorEffect = colorEffect;
+        branch.colorEffectType = colorEffectType;
+
+        branch.costEffect = costEffect;
+        branch.costEffectType = costEffectType;
+
         branchPlacer.PromptBranchPlacement(branch);
     }
 
@@ -29,7 +37,12 @@ public class DebugControls : MonoBehaviour
     {
         Branch branch = Instantiate(prefabToSpawn, transform.position, Quaternion.identity).GetComponent<Branch>();
         branch.shapeEffect = square;
-        Debug.Log(branch.shapeEffect.name);
+        branch.colorEffect = colorEffect;
+        branch.colorEffectType = colorEffectType;
+
+        branch.costEffect = costEffect;
+        branch.costEffectType = costEffectType;
+
         branchPlacer.PromptBranchPlacement(branch);
     }
 

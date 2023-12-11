@@ -20,6 +20,7 @@ public class Fruit : MonoBehaviour
     public bool isRipe = false;
 
     public Node parentNode;
+    private Bank bank;
 
     private void Awake()
     {
@@ -37,9 +38,20 @@ public class Fruit : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
+    public void SetColor(Color color)
+    {
+        ripeColor = color;
+        GetComponent<SpriteRenderer>().color = color;
+    }
+
+    public void SetCost(int newCost)
+    {
+        cost = newCost;
+        if(parentNode.parentBranch.parentTree.highestCost < cost) parentNode.parentBranch.parentTree.highestCost = cost;
+    }
+
     public void ProgressGrowth()
     {
-        Debug.Log(growthDays);
         growthDays++;
     
         if(growthDays == 1) 
@@ -57,7 +69,18 @@ public class Fruit : MonoBehaviour
             return;
         }
 
-        if(growthDays == daysTillRipe) GetComponent<SpriteRenderer>().color = ripeColor;
+        if(growthDays == daysTillRipe) 
+        {
+            GetComponent<SpriteRenderer>().color = ripeColor;
+            isRipe = true;
+        }
     }
 
+    public void ResetGrowth()
+    {
+        growthDays = 0;
+        GetComponent<SpriteRenderer>().enabled = false;
+        isRipe = false;
+    }
+    
 }

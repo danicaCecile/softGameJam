@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 15537e25bdf0b544fa0acc7fbe6ef485, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16078432, g: 0.16078432, b: 0.20784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -164,5 +164,8 @@ MonoBehaviour:
   isBase: 0
   width: 0
   isSelected: 0
+  canBeSelected: 1
   parentBranch: {fileID: 0}
   originalColor: {r: 0, g: 0, b: 0, a: 0}
+  connectedNode: {fileID: 0}
+  currentFruit: {fileID: 0}

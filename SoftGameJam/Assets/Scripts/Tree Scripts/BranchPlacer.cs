@@ -77,6 +77,17 @@ public class BranchPlacer : MonoBehaviour
         tempParentBranches.Add(branch.parentBranch);
         branch.parentBranches = tempParentBranches;
         
+        if(branch.colorEffectType == 0) branch.finalColor = branch.parentBranch.finalColor - branch.colorEffect;
+        else if(branch.colorEffectType == 1) branch.finalColor = branch.parentBranch.finalColor + branch.colorEffect;
+        else branch.finalColor = branch.colorEffect;
+
+        if(branch.costEffectType == 0) branch.finalCost = branch.parentBranch.finalCost - branch.costEffect;
+        else if(branch.costEffectType == 1) branch.finalCost = branch.parentBranch.finalCost + branch.costEffect;
+        else if(branch.costEffectType == 2) branch.finalCost = branch.parentBranch.finalCost * branch.costEffect;
+        else branch.finalCost = (int) Mathf.Ceil((float)branch.parentBranch.finalCost / (float) branch.costEffect);
+
+        if(branch.finalCost < 1) branch.finalCost = 1;
+
         branch.CreateBranch();
     }
 
